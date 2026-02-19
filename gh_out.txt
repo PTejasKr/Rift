@@ -1,0 +1,5 @@
+Flag --confirm has been deprecated, Pass any argument to skip confirmation prompt
+https://github.com/PTejasKr/Rift
+To https://github.com/PTejasKr/Rift.git
+ * [new branch]      HEAD -> master
+branch 'master' set up to track 'origin/master'.
