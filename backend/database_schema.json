@@ -1,0 +1,54 @@
+{
+  "tables": [
+    {
+      "table_name": "Organizations",
+      "description": "Stores tenant/company details.",
+      "columns": [
+        { "name": "id", "type": "integer", "primary_key": true },
+        { "name": "created_at", "type": "timestamp" },
+        { "name": "org_name", "type": "text", "required": true },
+        { "name": "org_category", "type": "text" },
+        { "name": "org_wallet_address", "type": "text", "unique": true },
+        { "name": "branding_color", "type": "text", "default": "#000000" },
+        { "name": "logo_url", "type": "text", "format": "url" }
+      ]
+    },
+    {
+      "table_name": "Users",
+      "description": "Stores users mapped to an Organization with RBAC.",
+      "columns": [
+        { "name": "id", "type": "integer", "primary_key": true },
+        { "name": "created_at", "type": "timestamp" },
+        { "name": "org_id", "type": "table_reference", "reference": "Organizations" },
+        { "name": "email", "type": "text", "unique": true, "format": "email" },
+        { "name": "password", "type": "password" },
+        { "name": "user_role", "type": "text", "options": ["admin", "manager"], "default": "manager" }
+      ]
+    },
+    {
+      "table_name": "Events",
+      "description": "Stores badge/ticket events created by Organizations.",
+      "columns": [
+        { "name": "id", "type": "integer", "primary_key": true },
+        { "name": "created_at", "type": "timestamp" },
+        { "name": "org_id", "type": "table_reference", "reference": "Organizations" },
+        { "name": "event_name", "type": "text", "required": true },
+        { "name": "event_category", "type": "text" },
+        { "name": "badge_tier", "type": "text", "options": ["gold", "silver", "bronze", "standard"] },
+        { "name": "asa_id", "type": "text", "description": "Algorand Standard Asset ID" },
+        { "name": "qr_token", "type": "text", "unique": true, "description": "Unique hash for QR generation" }
+      ]
+    },
+    {
+      "table_name": "Event_Actions",
+      "description": "Logs when a wallet interacts with an event (scans QR, claims badge). Renamed from 'Actions' to prevent SQL/Xano keyword conflicts.",
+      "columns": [
+        { "name": "id", "type": "integer", "primary_key": true },
+        { "name": "event_id", "type": "table_reference", "reference": "Events" },
+        { "name": "user_wallet_address", "type": "text", "required": true },
+        { "name": "action_timestamp", "type": "timestamp", "default": "now()" },
+        { "name": "txn_hash", "type": "text", "unique": true, "description": "Blockchain transaction hash" }
+      ]
+    }
+  ]
+}

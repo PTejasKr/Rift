@@ -1,0 +1,88 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "SaaS Core Engine API",
+    "version": "1.0.0",
+    "description": "Xano-generated REST API for Organization, Event, and Action management."
+  },
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "summary": "User Login",
+        "tags": ["Authentication"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": { "type": "string" },
+                  "password": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Returns Auth Token" }
+        }
+      }
+    },
+    "/organizations": {
+      "get": {
+        "summary": "Get Organizations",
+        "tags": ["Organizations"],
+        "responses": { "200": { "description": "List of orgs" } }
+      },
+      "post": {
+        "summary": "Create Organization",
+        "tags": ["Organizations"],
+        "responses": { "200": { "description": "Created Org object" } }
+      }
+    },
+    "/events": {
+      "get": {
+        "summary": "Get Events (Filtered by user's org_id)",
+        "tags": ["Events"],
+        "security": [{ "BearerAuth": [] }],
+        "responses": { "200": { "description": "List of events" } }
+      },
+      "post": {
+        "summary": "Create Event",
+        "tags": ["Events"],
+        "security": [{ "BearerAuth": [] }],
+        "responses": { "200": { "description": "Created Event object" } }
+      }
+    },
+    "/event_actions": {
+      "post": {
+        "summary": "Log a new Event Action (e.g., QR Scan)",
+        "tags": ["Event Actions"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "event_id": { "type": "integer" },
+                  "user_wallet_address": { "type": "string" },
+                  "txn_hash": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "Action logged successfully" } }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
