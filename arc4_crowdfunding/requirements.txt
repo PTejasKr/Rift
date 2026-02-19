@@ -1,0 +1,7 @@
+# Algorand Smart Contract Dependencies
+# Python SDK and development tools for ARC-4 contracts
+
+algopy>=0.9.0
+pyteal>=0.24.0
+algokit>=2.0.0
+beaker>=0.4.0
